@@ -116,6 +116,33 @@
                         value: orgSettings.accountAdditionalFees,
                         errors: orgSettings.getErrors('accountAdditionalFees'),
                     }) }}
+
+                    {{ forms.selectField({
+                        fieldClass: 'width-50',
+                        label: "Line Items are Inclusive or Exclusive of Tax"|t("xero"),
+                        instructions: "Are line items inclusive or exclusive of tax"|t("xero"),
+                        id: "accountLineItemTax",
+                        name: "accountLineItemTax",
+                        value: orgSettings.accountLineItemTax,
+                        options: {
+                            Exclusive: "Exclusive"|t("xero"),
+                            Inclusive: "Inclusive"|t("xero")
+                        }
+                    }) }}
+
+                    {{ forms.selectField({
+                        fieldClass: 'width-50',
+                        label: "Invoices Status"|t("xero"),
+                        instructions: "Invoice in Xero are created with this status"|t("xero"),
+                        id: "accountInvoiceStatus",
+                        name: "accountInvoiceStatus",
+                        value: orgSettings.accountInvoiceStatus,
+                        options: {
+                            AUTHORISED: "AUTHORISED"|t("xero"),
+                            SUBMITTED: "SUBMITTED"|t("xero"),
+                            DRAFT: "DRAFT"|t("xero")
+                        }
+                    }) }}
                 </div>
             </div>
 

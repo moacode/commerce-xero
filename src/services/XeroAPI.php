@@ -253,6 +253,20 @@ class XeroAPI extends Component
             $lineItem = $beforeAddLineItemEvent->lineItem;
 
             $invoice->addLineItem($lineItem);
+
+            //Check for line item adjustments
+            $lineItemAdjustments = $orderItem->getAdjustments();
+
+            foreach ($lineItemAdjustments as $lineItemAdjustment) {
+                if ($lineItemAdjustment->type == 'discount' ) {
+                    $lineItem = new LineItem($this->getApplication());
+                    $lineItem->setAccountCode($this->_client->getOrgSettings()->accountDiscounts);
+                    $lineItem->setDescription($lineItemAdjustment->name);
+                    $lineItem->setQuantity(1);
+                    $lineItem->setUnitAmount(Plugin::getInstance()->withDecimals($this->decimals, $lineItemAdjustment->amount));
+                    $invoice->addLineItem($lineItem);
+                }
+            }
         }
 
         // get all adjustments (discounts,shipping etc)
@@ -268,7 +282,7 @@ class XeroAPI extends Component
                 $invoice->addLineItem($lineItem);
             } elseif ($adjustment->type == 'discount' ) {
                 $lineItem = new LineItem($this->getApplication());
-                $lineItem->setAccountCode($this->_client->getOrgSettings()->accountDiscount);
+                $lineItem->setAccountCode($this->_client->getOrgSettings()->accountDiscounts);
                 $lineItem->setDescription($adjustment->name);
                 $lineItem->setQuantity(1);
                 $lineItem->setUnitAmount(Plugin::getInstance()->withDecimals($this->decimals, $adjustment->amount));
@@ -284,10 +298,10 @@ class XeroAPI extends Component
         }
 
         // setup invoice
-        $invoice->setStatus('AUTHORISED')
+        $invoice->setStatus($this->_client->getOrgSettings()->accountInvoiceStatus) // Optional (Authorised/Draft/Submitted)
             ->setType('ACCREC')
             ->setContact($contact)
-            ->setLineAmountType("Exclusive") // TODO: this should be optional (Inclusive/Exclusive)
+            ->setLineAmountType($this->_client->getOrgSettings()->accountLineItemTax) // Optional (Inclusive/Exclusive)
             ->setCurrencyCode($order->getPaymentCurrency())
             ->setInvoiceNumber($order->reference)
             ->setSentToContact(true)
