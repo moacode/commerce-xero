@@ -3,7 +3,11 @@
 namespace thejoshsmith\commerce\xero\controllers;
 
 use Craft;
+use craft\errors\MissingComponentException;
 use thejoshsmith\commerce\xero\Plugin;
+use yii\base\InvalidConfigException;
+use yii\web\BadRequestHttpException;
+use yii\web\HttpException;
 use yii\web\Response;
 
 class SettingsController extends BaseController
@@ -14,7 +18,7 @@ class SettingsController extends BaseController
     /**
      * @throws HttpException
      */
-    public function init()
+    public function init(): void
     {
         $this->requireAdmin();
         parent::init();
@@ -36,8 +40,11 @@ class SettingsController extends BaseController
 
     /**
      * @return Response|null
+     * @throws BadRequestHttpException
+     * @throws MissingComponentException
+     * @throws InvalidConfigException
      */
-    public function actionSaveSettings()
+    public function actionSaveSettings(): ?Response
     {
         $this->requirePostRequest();
 

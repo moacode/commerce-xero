@@ -21,7 +21,7 @@ class SendToXeroAsset extends AssetBundle
     /**
      * @inheritdoc
      */
-    public function init()
+    public function init(): void
     {
         $this->sourcePath = "@thejoshsmith/commerce/xero/web/assets/dist";
 

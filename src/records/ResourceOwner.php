@@ -19,7 +19,7 @@ class ResourceOwner extends ActiveRecord
         return '{{%xero_resource_owners}}';
     }
 
-    public function rules()
+    public function rules(): array
     {
         return [
             [['id', 'xeroUserId', 'preferredUsername', 'email', 'givenName', 'familyName'], 'safe'],

@@ -78,7 +78,7 @@ trait Services
      *
      * @return void
      */
-    private function _setPluginComponents()
+    private function _setPluginComponents(): void
     {
         $settings = $this->getSettings();
 
@@ -116,7 +116,7 @@ trait Services
      *
      * @return void
      */
-    private function _setDependencies()
+    private function _setDependencies(): void
     {
         // Automatically inject an authenticated
         // Xero Client into the consuming class.

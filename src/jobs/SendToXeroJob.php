@@ -8,7 +8,6 @@ namespace thejoshsmith\commerce\xero\jobs;
 
 use thejoshsmith\commerce\xero\Plugin;
 
-use Craft;
 use craft\queue\BaseJob;
 use craft\commerce\Plugin as Commerce;
 
@@ -26,7 +25,7 @@ class SendToXeroJob extends BaseJob
     // Protected Methods
     // ========================================================================
 
-    protected function defaultDescription()
+    protected function defaultDescription(): ?string
     {
         return Plugin::t('Send Order to Xero');
     }
@@ -35,7 +34,7 @@ class SendToXeroJob extends BaseJob
     // Public Methods
     // =========================================================================
 
-    public function execute($queue)
+    public function execute($queue): void
     {
         $totalSteps = 1;
         for ($step = 0; $step < $totalSteps; $step++) {

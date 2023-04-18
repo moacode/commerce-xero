@@ -16,6 +16,7 @@ use thejoshsmith\commerce\xero\events\InvoiceEvent;
 use thejoshsmith\commerce\xero\events\LineItemEvent;
 use Throwable;
 
+use XeroPHP\Remote\Exception\NotFoundException;
 use yii\base\Exception;
 
 use craft\base\Component;
@@ -161,15 +162,16 @@ class XeroAPI extends Component
     {
         try {
             // this can return either fullname or their username (email hopefully)
-            $user = $order->getUser();
+            $user = $order->getCustomer();
 
             // Define contact details
             // Note: It's possible for customers to _only_ have
             // an email address, so we need to cater for that scenario
+            $address = $order->getBillingAddress() ?: $order->getShippingAddress();
             $contactEmail = $user ? $user->email : $order->getEmail();
-            $contactName = $user ? $user->getName() : $order->getEmail();
-            $contactFirstName = $user->firstName ?? null;
-            $contactLastName = $user->lastName ?? null;
+            $contactName = $address->fullName ?? $contactEmail;
+            $contactFirstName = $address->firstName ?? null;
+            $contactLastName = $address->lastName ?? null;
 
             $contact = $this->getApplication()->load(Contact::class)->where(
                 '
@@ -427,39 +429,29 @@ class XeroAPI extends Component
         $exceptionType = get_class($e);
 
         switch($exceptionType) {
-        case NotFoundException::class:
-            throw new Exception('The resource you requested in Xero could not be found.');
-            break;
+            case NotFoundException::class:
+                throw new Exception('The resource you requested in Xero could not be found.');
 
-        case BadRequestException::class:
-            throw new Exception($e->getMessage());
-            break;
+            case BadRequestException::class:
+                throw new Exception($e->getMessage());
+                break;
 
-        case ForbiddenException::class:
-            // revoke connection
-            Plugin::getInstance()
-                ->getXeroConnections()
-                ->setDisconnected($this->_client->getConnection());
-            throw new Exception('You don\'t have access to this organisation. Please re-authenticate to resume access.');
-            break;
+            case ForbiddenException::class:
+                // revoke connection
+                Plugin::getInstance()
+                    ->getXeroConnections()
+                    ->setDisconnected($this->_client->getConnection());
+                throw new Exception('You don\'t have access to this organisation. Please re-authenticate to resume access.');
 
-        case NotAvailableException::class:
-        case OrganisationOfflineException::class:
-            throw new Exception('Xero is currently offline. Please try again shortly.');
-            break;
+            case NotAvailableException::class:
+            case OrganisationOfflineException::class:
+                throw new Exception('Xero is currently offline. Please try again shortly.');
 
-        case RateLimitExceededException::class:
-            throw new Exception('You have exceeded the Xero API rate limit.');
-            break;
+            case RateLimitExceededException::class:
+                throw new Exception('You have exceeded the Xero API rate limit.');
 
-        default:
-            throw new Exception('Something went wrong fetching data from Xero, please try again');
-            break;
+            default:
+                throw new Exception('Something went wrong fetching data from Xero, please try again');
         }
-
-        Craft::error(
-            $e->getMessage(),
-            'xero-api'
-        );
     }
 }

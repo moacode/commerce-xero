@@ -85,7 +85,7 @@ class Credential extends ActiveRecord
     /**
      * Refreshes an access token and updates the record
      *
-     * @return void
+     * @return Credential
      */
     public function refreshAccessToken()
     {

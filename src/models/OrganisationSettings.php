@@ -41,7 +41,7 @@ class OrganisationSettings extends Model
         return $organisationSettings;
     }
 
-    public function rules()
+    public function rules(): array
     {
         parent::rules();
 

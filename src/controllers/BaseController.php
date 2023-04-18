@@ -26,17 +26,20 @@ class BaseController extends Controller
      *
      * @return void
      */
-    public function init()
+    public function init(): void
     {
         $this->requireLogin();
         $this->requirePermission('accessPlugin-xero');
         parent::init();
     }
 
-    public function actionSendOrderToXero()
+    /**
+     * @return bool
+     * @throws BadRequestHttpException
+     */
+    public function actionSendOrderToXero(): bool
     {
-        $orderId = Craft::$app->request->getParam('orderId');
-        if ($orderId) {
+        if ($orderId = Craft::$app->request->getParam('orderId')) {
             try {
                 $order = Commerce::getInstance()->getOrders()->getOrderById($orderId);
                 Plugin::getInstance()->getXeroApi()->sendOrder($order);
@@ -44,6 +47,7 @@ class BaseController extends Controller
                 throw new BadRequestHttpException($e->getMessage());
             }
         }
+
         return false;
     }
 

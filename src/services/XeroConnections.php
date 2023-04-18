@@ -276,9 +276,9 @@ class XeroConnections extends Component
     /**
      * Returns the last updated or created connection record
      *
-     * @return Connection
+     * @return Connection|null
      */
-    public function getLastCreatedOrUpdated(): Connection
+    public function getLastCreatedOrUpdated(): ?Connection
     {
         return Connection::find()
             ->orderBy('dateUpdated DESC, dateCreated DESC')

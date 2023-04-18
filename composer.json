@@ -2,7 +2,7 @@
   "name": "thejoshsmith/commerce-xero",
   "description": "Send Commerce invoices to Xero including contacts, payments and even inventory updates.",
   "type": "craft-plugin",
-  "version": "1.0.4.1",
+  "version": "4.0.0",
   "keywords": [
     "craft",
     "cms",
@@ -23,8 +23,8 @@
     }
   ],
   "require": {
-    "craftcms/cms": "^3.1.0",
-    "craftcms/commerce": "^2.0.0 || ^3.0.0",
+    "craftcms/cms": "^4.0.0",
+    "craftcms/commerce": "^4.0.0",
     "calcinai/xero-php": "^v2.2.4"
   },
   "autoload": {
@@ -47,5 +47,11 @@
       "XeroAPIService": "thejoshsmith\\commerce\\xero\\services\\XeroAPIService"
     },
     "class": "thejoshsmith\\commerce\\xero\\Plugin"
+  },
+  "config": {
+    "allow-plugins": {
+      "yiisoft/yii2-composer": true,
+      "craftcms/plugin-installer": true
+    }
   }
 }

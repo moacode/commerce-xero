@@ -15,7 +15,7 @@ use craft\base\Model;
 use Craft;
 use yii\base\Exception;
 use craft\commerce\records\Order;
-use thejoshsmith\commerce\xero\records\Invoice;
+use thejoshsmith\commerce\xero\records\Invoice as InvoiceRecord;
 
 class Invoice extends Model
 {
@@ -33,7 +33,7 @@ class Invoice extends Model
     // Public Methods
     // =========================================================================
 
-    public function rules()
+    public function rules(): array
     {
         return [
             [['id', 'orderId'], 'number', 'integerOnly' => true],
@@ -60,7 +60,7 @@ class Invoice extends Model
     public function save(Invoice $model, bool $runValidation = true): bool
     {
         if ($model->id) {
-            $record = Invoice::findOne($model->id);
+            $record = InvoiceRecord::findOne($model->id);
 
             if (!$record) {
                 throw new Exception(
@@ -71,7 +71,7 @@ class Invoice extends Model
                 );
             }
         } else {
-            $record = new Invoice();
+            $record = new InvoiceRecord();
         }
 
         if ($runValidation && !$model->validate()) {

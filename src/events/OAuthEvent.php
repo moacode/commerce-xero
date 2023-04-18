@@ -2,6 +2,8 @@
 
 namespace thejoshsmith\commerce\xero\events;
 
+use League\OAuth2\Client\Token\AccessTokenInterface;
+use thejoshsmith\commerce\xero\records\ResourceOwner;
 use yii\base\Event;
 
 /**
@@ -19,7 +21,7 @@ class OAuthEvent extends Event
     /**
      * An OAuth Access Token
      *
-     * @var \League\OAuth2\Client\Token\AccessTokenInterface
+     * @var AccessTokenInterface
      */
     public $token;
 

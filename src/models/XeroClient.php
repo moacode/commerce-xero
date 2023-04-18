@@ -108,7 +108,7 @@ class XeroClient extends Component
         );
     }
 
-    public function hasAccessTokenExpired()
+    public function hasAccessTokenExpired(): bool
     {
         return $this->getCredential()->isExpired();
     }

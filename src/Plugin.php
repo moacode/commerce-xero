@@ -74,7 +74,7 @@ class Plugin extends CraftPlugin
     // Public Properties
     // =========================================================================
 
-    public $schemaVersion = '1.2.0';
+    public string $schemaVersion = '1.2.0';
 
     // Traits
     // =========================================================================
@@ -161,7 +161,7 @@ class Plugin extends CraftPlugin
         return number_format((float)$number, $places, '.', '');
     }
 
-    public function getSettingsResponse()
+    public function getSettingsResponse(): mixed
     {
         Craft::$app->controller->redirect(UrlHelper::cpUrl('xero/settings'));
     }
@@ -172,9 +172,9 @@ class Plugin extends CraftPlugin
     /**
      * Returns the Settings Model for this plugin
      *
-     * @return void
+     * @return craft\base\Model|null
      */
-    protected function createSettingsModel()
+    protected function createSettingsModel(): ?craft\base\Model
     {
         return new SettingsModel();
     }

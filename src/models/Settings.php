@@ -10,15 +10,15 @@ use craft\base\Model;
  */
 class Settings extends Model
 {
-    public $xeroClientId = '';
-    public $xeroClientSecret = '';
+    public string $xeroClientId = '';
+    public string $xeroClientSecret = '';
 
     /**
      * Defines validation rules for the above settings
      *
-     * @return void
+     * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['xeroClientId', 'xeroClientSecret'], 'required'],

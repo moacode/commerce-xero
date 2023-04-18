@@ -19,7 +19,7 @@ class Tenant extends ActiveRecord
         return '{{%xero_tenants}}';
     }
 
-    public function rules()
+    public function rules(): array
     {
         return [
             [['id', 'tenantId', 'tenantType', 'tenantName'], 'safe'],

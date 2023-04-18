@@ -24,6 +24,8 @@ use thejoshsmith\commerce\xero\records\Connection;
 
 use Craft;
 
+use yii\base\Exception;
+use yii\base\InvalidConfigException;
 use yii\web\Response;
 use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
@@ -36,9 +38,12 @@ class ConnectionsController extends BaseController
     /**
      * Updates a connection via a PATCH requets
      *
-     * @return JSON
+     * @return Response
+     * @throws BadRequestHttpException
+     * @throws InvalidConfigException
+     * @throws Exception
      */
-    public function actionUpdate()
+    public function actionUpdate(): Response
     {
         $this->_requirePatchRequest();
 
@@ -80,9 +85,11 @@ class ConnectionsController extends BaseController
     /**
      * Disconnects a connection
      *
-     * @return JSON
+     * @return Response
+     * @throws BadRequestHttpException
+     * @throws Exception
      */
-    public function actionDisconnect()
+    public function actionDisconnect(): Response
     {
         $this->requirePostRequest();
         $xeroConnections = Plugin::getInstance()->getXeroConnections();
